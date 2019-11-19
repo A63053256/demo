@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.UserDao">
+	<sql id="col">
+		u_id AS id,
+		u_name AS name,
+		u_nickName AS nickName,
+		u_password AS password
+	</sql>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+		insert into cn_user(u_id,u_name,u_nickName,u_password) values(#{id},#{name},#{nickName},#{password})
+	</insert>
+	<select id="findAll" resultType="com.bean.User">
+	  	select <include refid="col"></include> from cn_user;
+	</select>
+	<delete id="delete">
+		delete from cn_user where u_id = #{id};
+	</delete>
+	<update id="update">
+		update cn_user set u_name = #{name},u_nickName = #{nickName},u_password = #{password} where u_id = #{id};
+	</update>
+	<select id="findById" resultType="com.bean.User">
+		select <include refid="col"></include> from cn_user where u_id = #{id};
+	</select>
+	<select id="findByName" resultType="com.bean.User">
+		select <include refid="col"></include> from cn_user where u_name = #{name};
+	</select>
+	<select id="findByNickName" resultType="com.bean.User">
+		select <include refid="col"></include> from cn_user where u_nickname = #{nickname};
+	</select>
+</mapper>
+

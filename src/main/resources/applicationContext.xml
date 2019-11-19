@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!--数据源-->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&amp;characterEncoding=utf-8&amp;serverTimezone=Asia/Shanghai"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root" />
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="initialSize" value="10" />
+    </bean>
+    <!--SqlSessionFactory-->
+    <bean id="SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref = "dataSource"></property>
+        <property name="mapperLocations" value = "classpath:mapper/*.xml"></property>
+    </bean>
+    <!--mapper-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.dao"></property>
+    </bean>
+    <!--ioc扫描-->
+    <context:component-scan base-package="com"></context:component-scan>
+    <!--mvc扫描-->
+    <mvc:annotation-driven></mvc:annotation-driven>
+    <!--Aop扫描-->
+    <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+    <!--注解事务管理-->
+    <bean id="txManger" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <tx:annotation-driven transaction-manager="txManger"></tx:annotation-driven>
+    <!--<mvc:interceptors>-->
+        <!--<mvc:interceptor>-->
+            <!--<mvc:mapping path="/**/"/>-->
+            <!--<mvc:exclude-mapping path="/user/login.do"/>-->
+            <!--<mvc:exclude-mapping path="/user/reg.do"/>-->
+            <!--<mvc:exclude-mapping path="/user/register.do"/>-->
+            <!--<mvc:exclude-mapping path="/user/findPassWord.do"/>-->
+            <!--<mvc:exclude-mapping path="/user/updatePassWord.do"/>-->
+            <!--<bean class="com.intercepter.LoginController"></bean>-->
+        <!--</mvc:interceptor>-->
+    <!--</mvc:interceptors>-->
+</beans>

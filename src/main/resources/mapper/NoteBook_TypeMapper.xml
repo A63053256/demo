@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.NoteBook_TypeDao">
+	<sql id="col">
+		n_type_id AS id,
+		n_type_name AS name,
+		n_type_desc AS type_desc
+	</sql>
+	<select id="findAll" resultType="com.bean.NoteBook_Type">
+	  	select <include refid="col"></include> from cn_notebook_type;
+	</select>
+
+	<select id="findById" resultType="com.bean.NoteBook_Type">
+		select <include refid="col"></include> from cn_notebook_type where n_type_id = #{id};
+	</select>
+	<select id="findByName" resultType="com.bean.NoteBook_Type">
+		select <include refid="col"></include> from cn_notebook_type where n_type_name = #{name};
+	</select>
+</mapper>
+
